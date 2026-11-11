@@ -1,0 +1,6 @@
+﻿id;activity_id;title;asset;cause;consequence;owner;probability;impact;residual_p;residual_i;score;level;residual_score;residual_level
+1;1;Indisponibilité ERP;Serveur ERP;Défaillance ou indisponibilité de la ressource;Interruption de l’activité;Responsable informatique;4;5;2;4;20;Critique;8;Modéré
+2;1;Perte des commandes;Base de données;Défaillance ou indisponibilité de la ressource;Interruption de l’activité;Responsable informatique;3;5;1;4;15;Élevé;4;Faible
+3;2;Coupure électrique;Entrepôt;Défaillance ou indisponibilité de la ressource;Interruption de l’activité;Responsable logistique;3;4;2;3;12;Élevé;6;Modéré
+4;2;Absence de personnel;Équipe logistique;Défaillance ou indisponibilité de la ressource;Interruption de l’activité;Responsable logistique;2;3;1;3;6;Modéré;3;Faible
+5;1;Panne du poste de secours;PC de secours;Défaillance ou indisponibilité de la ressource;Interruption de l’activité;Responsable informatique;1;2;1;2;2;Faible;2;Faible

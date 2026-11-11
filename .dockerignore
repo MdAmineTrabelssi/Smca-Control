@@ -1,0 +1,10 @@
+.venv
+__pycache__
+.pytest_cache
+data
+docs
+examples
+.git
+*.zip
+certs/*.crt
+certs/*.key

@@ -78,3 +78,37 @@ def test_pdf_long_escaped_text(store):
     r['title']='<script> & panne'; r['cause']='Longue description détaillée. '*60
     store.save_risk(**r)
     assert len(PdfReader(io.BytesIO(pdf_bytes(store))).pages)>=2
+
+
+def make_activity(store, **kw):
+    data = dict(name='A', owner='O', dependencies='D', financial=3,
+                operational=3, reputation=3, rto=4., rpo=1., mtpd=24.)
+    data.update(kw)
+    return store.save_activity(**data)
+
+
+@pytest.mark.parametrize('rto,rpo,mtpd', [(4., 0., 4.), (1., 0., 24.)])
+def test_bia_limits_accepted(store, rto, rpo, mtpd):
+    make_activity(store, rto=rto, rpo=rpo, mtpd=mtpd)
+
+
+@pytest.mark.parametrize('rto,rpo,mtpd', [(0., 1., 24.), (5., 1., 4.), (4., -1., 24.)])
+def test_bia_limits_refused(store, rto, rpo, mtpd):
+    with pytest.raises(ValueError):
+        make_activity(store, rto=rto, rpo=rpo, mtpd=mtpd)
+
+
+@pytest.mark.parametrize('bad', [0, 6])
+def test_bia_impact_out_of_range(store, bad):
+    with pytest.raises(ValueError):
+        make_activity(store, financial=bad)
+
+
+def test_priority_rule(store):
+    make_activity(store, name='crit4', financial=4, rto=10., mtpd=48.)
+    make_activity(store, name='rto4', rto=4., mtpd=48.)
+    make_activity(store, name='std', rto=5., mtpd=48.)
+    prio = {r['name']: r['priority'] for r in store.rows('activities')}
+    assert prio['crit4'] == 'Prioritaire'
+    assert prio['rto4'] == 'Prioritaire'
+    assert prio['std'] == 'Standard'
